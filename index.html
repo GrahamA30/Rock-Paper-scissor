@@ -64,8 +64,16 @@
             for (let index = 1; index <= 5; index++) {
                 let computerSelection = computerPlay();
                 let playerSelection = prompt("Enter Rock, Paper, or Scissors");
+                if(playerSelection == null){
+                    return console.log("Game aborted.");
+                }
 
-                
+                while(playerSelection.toLowerCase() != "rock" && playerSelection.toLowerCase() != "paper" && playerSelection.toLowerCase() != "scissors"){
+                    playerSelection = prompt("Enter Rock, Paper, or Scissors");
+                    if(playerSelection == null){
+                        return console.log("Game aborted.");
+                    }
+                }
                 let matchResult = playRound(playerSelection,computerSelection);
                 if(matchResult.search("You Win") != -1){
                     playerScore++;
