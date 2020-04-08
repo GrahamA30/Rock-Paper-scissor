@@ -1,6 +1,29 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <title>Rock Paper Scissors</title>
+    </head>
+    
+    <body>
+        <h1>Rock Paper Scissors</h1>
+        <div class="btns">
+            <button id="Rock">Rock</button>
+            <button id="Paper">Paper</button>
+            <button id="Scissors">Scissors</button>
+        </div>
+        <div class="results">
+            <p id="score">Player: 0 Computer: 0</p>
+    
+        </div>
+
+    </body>
+
+
+
     <script>
+        let playerScore = 0;
+        let computerScore = 0;
+
         function computerPlay(){
             let value = Math.floor(Math.random() * 100);
             
@@ -15,16 +38,39 @@
             }
         }
 
-        function playRound(playerSelection, computerSelection){
-
-            playerSelection = capitalize(playerSelection);
-
+        function updateScore(matchResult){
+            const score = document.querySelector("#score");
             
-            return findWinner(playerSelection,computerSelection);
+            if(matchResult.search("You Win") != -1){
+                playerScore++;
+            }
+
+            else if(matchResult.search("You Lose") != -1){
+                computerScore++;
+            }
+
+            score.textContent = `Player: ${playerScore} Computer: ${computerScore}` 
         }
-        
-        function capitalize(word){
-            return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+        function gameOver(){
+            if(playerScore == 5){
+                    alert("You won the game!");
+                    resetScore();
+            }
+            else if(computerScore == 5){
+                    alert("You lost the game!");
+                    resetScore();
+            }          
+        }
+
+        function resetScore(){
+            playerScore =0;
+            computerScore =0;
+        }
+        function playRound(){
+            let text = findWinner(this.id,computerPlay())
+            updateScore(text);
+            roundResults.textContent= text;
+            gameOver();
         }
 
         function findWinner(playerSelection, computerSelection){
@@ -56,46 +102,20 @@
                 }
             }
         }
-        
-        function game() {
-            let playerScore = 0;
-            let computerScore = 0;
 
-            for (let index = 1; index <= 5; index++) {
-                let computerSelection = computerPlay();
-                let playerSelection = prompt("Enter Rock, Paper, or Scissors");
-                if(playerSelection == null){
-                    return console.log("Game aborted.");
-                }
+        const btns = document.querySelectorAll('button');
 
-                while(playerSelection.toLowerCase() != "rock" && playerSelection.toLowerCase() != "paper" && playerSelection.toLowerCase() != "scissors"){
-                    playerSelection = prompt("Enter Rock, Paper, or Scissors");
-                    if(playerSelection == null){
-                        return console.log("Game aborted.");
-                    }
-                }
-                let matchResult = playRound(playerSelection,computerSelection);
-                if(matchResult.search("You Win") != -1){
-                    playerScore++;
-                }
-                else if(matchResult.search("You Lose") != -1){
-                    computerScore++;
-                }
-                console.log(matchResult);
-                
-            }
+        btns.forEach((btn) => { 
 
-            if(playerScore == computerScore){
-                console.log("Draw!"+ " Player: " + playerScore + " Computer: " + computerScore);
-            }
-            else if(playerScore > computerScore){
-                console.log("You Win!" + " Player: " + playerScore + " Computer: " + computerScore);
-            }
-            else{
-                console.log("You Lose!" + " Player: " + playerScore + " Computer: " + computerScore);
-            }
-        }
+            btn.addEventListener('click',playRound);
 
-        game();
+        });
+
+        const results = document.querySelector('.results');
+        const roundResults = document.createElement('p');
+        results.appendChild(roundResults);
+
+       
+
     </script>
 </html>
